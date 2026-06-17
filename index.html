@@ -1,511 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yiming Wang | Speech &amp; Multimodal AI Research Scientist</title>
+<meta name="description" content="Yiming Wang (王一鸣) is a Research Scientist at NVIDIA working on multimodal LLMs and speech recognition. Creator of the Espresso ASR toolkit and a major Kaldi contributor.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2376b900'/%3E%3Ctext x='50%25' y='53%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='30' font-weight='700' fill='%23ffffff'%3EYW%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="yiming.jpg">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://freewym.github.io/">
+<meta property="og:title" content="Yiming Wang | Speech &amp; Multimodal AI Research Scientist">
+<meta property="og:description" content="Research Scientist at NVIDIA working on multimodal LLMs and speech recognition. Creator of the Espresso ASR toolkit and a major Kaldi contributor.">
+<meta property="og:image" content="https://freewym.github.io/yiming.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Yiming Wang | Speech &amp; Multimodal AI Research Scientist">
+<meta name="twitter:description" content="Research Scientist at NVIDIA working on multimodal LLMs and speech recognition. Creator of the Espresso ASR toolkit and a major Kaldi contributor.">
+<meta name="twitter:image" content="https://freewym.github.io/yiming.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 <style>
-p    {max-width:95%; word-wrap:break-word; line-height: 120%;}
-li	{max-width:98%; word-wrap:break-word;}
-a    {text-decoration: none;}
+:root {
+  --bg: #fbfbfd;
+  --surface: #ffffff;
+  --surface-2: #f4f5f8;
+  --text: #1a1c20;
+  --text-soft: #565b66;
+  --text-faint: #868c98;
+  --border: #e7e9ee;
+  --accent: #76b900; /* NVIDIA green */
+  --accent-ink: #4d7a00;
+  --accent-soft: rgba(118, 185, 0, 0.12);
+  --shadow: 0 1px 2px rgba(20, 24, 31, 0.04), 0 8px 24px rgba(20, 24, 31, 0.05);
+  --radius: 16px;
+  --maxw: 1100px;
+}
+/* Dark palette: applied when the user picks dark, or when the OS prefers
+   dark and the user hasn't explicitly chosen light. */
+:root[data-theme="dark"] {
+  --bg: #0e1014;
+  --surface: #161a20;
+  --surface-2: #1c2128;
+  --text: #e9ecf1;
+  --text-soft: #aeb6c2;
+  --text-faint: #7c8493;
+  --border: #262c35;
+  --accent: #8fd616;
+  --accent-ink: #a6e62e;
+  --accent-soft: rgba(143, 214, 22, 0.14);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1014;
+    --surface: #161a20;
+    --surface-2: #1c2128;
+    --text: #e9ecf1;
+    --text-soft: #aeb6c2;
+    --text-faint: #7c8493;
+    --border: #262c35;
+    --accent: #8fd616;
+    --accent-ink: #a6e62e;
+    --accent-soft: rgba(143, 214, 22, 0.14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: var(--accent-ink); text-decoration: none; transition: color .15s ease; }
+a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: var(--maxw); margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 18px;
+}
+.nav-brand { font-weight: 700; letter-spacing: -0.01em; margin-right: auto; font-size: 15px; }
+.nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav-links a {
+  color: var(--text-soft); font-size: 14px; font-weight: 500;
+  padding: 6px 12px; border-radius: 999px;
+}
+.nav-links a:hover { color: var(--text); background: var(--surface-2); text-decoration: none; }
+.nav-links a.active { color: var(--accent-ink); background: var(--accent-soft); }
+
+.theme-toggle {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; padding: 0; border-radius: 999px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text-soft);
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--accent); }
+.theme-toggle svg { width: 17px; height: 17px; }
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+}
+
+/* ---------- Layout ---------- */
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  display: grid; grid-template-columns: 220px 1fr; gap: 40px;
+  align-items: center; padding: 56px 0 16px;
+}
+.hero-photo {
+  width: 220px; height: 270px; object-fit: cover;
+  border-radius: 20px; box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.hero h1 { font-size: clamp(30px, 4vw, 42px); line-height: 1.1; margin: 0 0 4px; letter-spacing: -0.02em; }
+.hero .han { color: var(--text-faint); font-weight: 600; font-size: 0.62em; }
+.hero .role { font-size: 18px; font-weight: 600; margin: 10px 0 2px; }
+.hero .role .at { color: var(--text); font-weight: 700; }
+.hero .affil { color: var(--text-soft); font-size: 15px; margin: 0 0 18px; }
+.hero .affil a { color: var(--text-soft); font-weight: 500; }
+.hero .affil a:hover { color: var(--accent); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 14px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-soft); font-size: 13.5px; font-weight: 500;
+  box-shadow: var(--shadow);
+}
+.chip:hover { color: var(--text); border-color: var(--accent); text-decoration: none; transform: translateY(-1px); transition: all .15s ease; }
+.chip svg { width: 15px; height: 15px; }
+
+.interests { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.interests .tag {
+  font-size: 12.5px; font-weight: 600; color: var(--accent-ink);
+  background: var(--accent-soft); padding: 5px 12px; border-radius: 999px;
+}
+
+/* ---------- Sections ---------- */
+section { padding: 26px 0; scroll-margin-top: 84px; }
+.sec-head {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 0 0 22px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sec-head h2 {
+  font-size: 17px; font-weight: 800; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent-ink); margin: 0;
+}
+.sec-head .count { font-size: 12px; color: var(--text-faint); font-weight: 500; }
+
+.collapsible > summary { cursor: pointer; list-style: none; align-items: center; }
+.collapsible > summary::-webkit-details-marker { display: none; }
+.collapsible > summary .fold-hint {
+  margin-left: auto; font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--text-faint); text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.collapsible > summary .fold-hint::before { content: "Show"; }
+.collapsible[open] > summary .fold-hint::before { content: "Hide"; }
+.collapsible > summary .fold-hint::after {
+  content: ""; width: 7px; height: 7px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg); transition: transform .2s ease; margin-top: -3px;
+}
+.collapsible[open] > summary .fold-hint::after { transform: rotate(-135deg); margin-top: 2px; }
+.collapsible > summary:hover .fold-hint { color: var(--accent-ink); }
+
+.prose p { color: var(--text-soft); font-size: 16px; margin: 0 0 14px; max-width: none; }
+.prose p:last-child { margin-bottom: 0; }
+
+/* ---------- Timeline cards ---------- */
+.cards { display: grid; gap: 14px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow);
+  transition: border-color .15s ease, transform .15s ease;
+}
+.card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.card-top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+.card-title { font-weight: 650; font-size: 16px; color: var(--text); margin: 0; }
+.card-date {
+  font-size: 12.5px; color: var(--text-faint); font-weight: 600;
+  white-space: nowrap; background: var(--surface-2);
+  padding: 3px 10px; border-radius: 999px;
+}
+.card-top-sub { margin-top: 4px; }
+.card-org { color: var(--text-soft); font-size: 14.5px; margin: 4px 0 0; }
+.card-meta { color: var(--text-faint); font-size: 13.5px; margin: 8px 0 0; }
+.card-meta a, .card-org a { font-weight: 500; }
+
+/* ---------- Talks ---------- */
+.talk { display: grid; gap: 2px; }
+
+/* ---------- Publications ---------- */
+.pub-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.pub-controls button {
+  font: inherit; font-size: 13px; font-weight: 600;
+  padding: 6px 14px; border-radius: 999px; cursor: pointer;
+  background: var(--surface); color: var(--text-soft);
+  border: 1px solid var(--border); transition: all .15s ease;
+}
+.pub-controls button:hover { color: var(--text); }
+.pub-controls button.active { background: var(--accent); color: #0e1014; border-color: var(--accent); }
+
+.pub-list { display: grid; gap: 4px; counter-reset: pub; }
+.pub {
+  display: grid; grid-template-columns: 56px 1fr; gap: 16px;
+  padding: 16px 8px; border-bottom: 1px solid var(--border);
+}
+.pub:last-child { border-bottom: none; }
+.pub .year {
+  font-size: 13px; font-weight: 700; color: var(--text-faint);
+  font-variant-numeric: tabular-nums; padding-top: 1px;
+}
+.pub .ptitle { font-weight: 600; font-size: 15.5px; color: var(--text); display: block; margin-bottom: 3px; }
+.pub .authors { color: var(--text-soft); font-size: 14px; }
+.pub .authors b { color: var(--text); }
+.pub .venue {
+  display: inline-block; margin-top: 5px; font-size: 12.5px; font-weight: 600;
+  color: var(--accent-ink); background: var(--accent-soft);
+  padding: 2px 10px; border-radius: 999px;
+}
+.pub .venue.tag-self::before { content: ""; }
+
+/* ---------- Footer ---------- */
+footer {
+  margin-top: 40px; padding: 30px 0 50px;
+  border-top: 1px solid var(--border);
+  color: var(--text-faint); font-size: 13px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+}
+footer a { color: var(--text-faint); }
+footer .visits { display: inline-flex; align-items: center; gap: 2px; }
+footer .visits img, footer .visits .statcounter { vertical-align: middle; }
+
+.visitor-map {
+  margin-top: 44px; padding-top: 26px;
+  text-align: center;
+}
+.visitor-map .map-embed { width: 390px; margin: 0 auto; }
+.visitor-map #mapmyvisitors-widget { min-height: 0 !important; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .hero { grid-template-columns: 1fr; text-align: center; gap: 24px; padding: 36px 0 28px; }
+  .hero-photo { margin: 0 auto; width: 180px; height: 222px; }
+  .chips, .interests { justify-content: center; }
+  .nav-links { display: none; }
+  .pub { grid-template-columns: 1fr; gap: 4px; }
+  .pub .year { color: var(--accent-ink); }
+}
 </style>
+<script>
+  // Apply saved theme before first paint to avoid a flash of the wrong theme.
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+    } catch (e) {}
+  })();
+</script>
 </head>
-
-<font face="Arial">
-
-<title> Yiming Wang | Speech Recognition Researcher at NVIDIA </title>
-
-<table align="left" cols="3" cellspacing="10" cellpadding="20" width="100%">
-<tbody><tr><td align="left" width="180">
-	<a href="./yiming.jpg" target="_blank">
-    <img src="yiming.jpg" align="bottom" height="245" width="180" border="0" alt="My
-	Image" bcolor="white"></a>
-</td><td>
-    <font size="6"><b>Yiming Wang (王一鸣)</b></font> 
-
-	<br><br>
-   <b> <font face="Arial" size="4">Research Scientist at NVIDIA <br>
-   </font></b><font face="Arial" size="4">
-
-    <a href="https://github.com/NVIDIA-NeMo/NeMo" target="_blank">NeMo Speech AI team</a><br>
-    NVIDIA Corporation, Santa Clara, CA, USA<br>
-    E-mail: freewym AT gmail DOT com<br>
-    </font>
-    <br>
-    <a href="https://scholar.google.com/citations?user=bndKId8AAAAJ&hl=en" target="_blank">Google Scholar</a> <br>
-    <a href="https://www.linkedin.com/in/freewym" target="_blank">LinkedIn</a> <br>
-    <a href="https://github.com/freewym" target="_blank">GitHub</a> <br>
-
-    </font></b></td>
-</font></td>
-
-
-<font size="2">
-<table border="0" cellpadding="2" width="98%" bgcolor="#eee9e9" id="biography">
-<tbody><tr>
-<td align="LEFT"><b><font face="Arial,Helvetica" color="#000000" size="4">Biography
-</tr>
-</tbody></table>
-
-<font size="3">
-<ul style="list-style-type:none">
-
-<li>
-<p>
-I am a Research Scientist at NVIDIA, working on Multimodal LLMs. Before joining NVIDIA, I worked in Microsoft <a href="https://blogs.microsoft.com/blog/2025/01/13/introducing-core-ai-platform-and-tools/" target="_blank">CoreAI</a> under <a href="https://research.microsoft.com/en-us/people/jinyli/" target="_blank">Jinyu Li</a>, after receiving my Ph.D. degree in Computer Science from <a href="https://www.jhu.edu/" target="_blank">Johns Hopkins University</a>.
-At JHU, I was also affiliated with the <a href="https://www.clsp.jhu.edu/" target="_blank">Center for Language and Speech Processing (CLSP)</a>, advised by
-Prof. <a href="https://www.clsp.jhu.edu/faculty-pages/sanjeev/" target="_blank">Sanjeev Khudanpur</a> and former JHU Prof. <a href="https://www.danielpovey.com" target="_blank">Daniel Povey</a>.
-I am mostly working on speech recognition (ASR) problems, and have broad interests in machine learning and natural language processing as well.
-I am one of the major contributors of the <a href="https://github.com/kaldi-asr/kaldi" target="_blank">Kaldi</a> project, and
-the owner of the open-source end-to-end ASR toolkit <a href="https://github.com/freewym/espresso" target="_blank">Espresso</a>.
-I interned at Google’s speech team and Amazon’s Alexa ASR team in 2017 and 2018 respectively, working on end-to-end ASR.
-</p>
-</li>
-
-<li>
-<p>
-I received my B.S. and M.S. degree in Computer Science at <a href="https://www.nju.edu.cn/" target="_blank">Nanjing University</a> in 2009 and 2012, respectively.
-My master advisor was Prof. <a href="https://cs.nju.edu.cn/lutong/" target="_blank">Tong Lu</a>.
-</p>
-</li>
-
-
-</ul>
-
-<font size="2">
-<table border="0" cellpadding="2" width="98%" bgcolor="#eee9e9" id="education">
-<tbody><tr>
-<td align="LEFT"><b><font face="Arial,Helvetica" color="#000000" size="4">Education</font></b></td>
-</tr>
-</tbody></table>
-
-<font size="3">
-<ul>
-<li><b>Ph.D. </b> in Computer Science
-(Sep 2012 - Jul 2021)  <br>
-<a href="https://www.cs.jhu.edu/" target="_blank">Department of Computer Science</a><br>
-<a href="https://www.jhu.edu/" target="_blank">Johns Hopkins University</a>, Baltimore, MD, USA<br>
-Advisors: Prof. <a href="https://www.clsp.jhu.edu/faculty-pages/sanjeev/" target="_blank">Sanjeev Khudanpur</a> and Dr. <a href="https://www.danielpovey.com" target="_blank">Daniel Povey</a><br>
-Thesis: <a href="https://jscholarship.library.jhu.edu/handle/1774.2/64380" target="_blank">Wake Word Detection and its Applications</a><br>
-</li>
-<br>
-
-<li><b>M.S.</b> in Computer Science
-(Sep 2009 - Jun 2012) <br>
-<a href="https://cs.nju.edu.cn/" target="_blank">Department of Computer Science and Technology</a><br>
-<a href="https://www.nju.edu.cn/" target="_blank">Nanjing University</a>, Nanjing, China<br>
-Advisor: Prof. <a href="https://cs.nju.edu.cn/lutong/" target="_blank">Tong Lu</a><br>
-Thesis: <a href="http://cdmd.cnki.com.cn/Article/CDMD-10284-1012376748.htm" target="_blank">Scene Image Understanding Based on Topic Modeling</a> (in Chinese)<br>
-</li>
-<br>
-
-<li><b>B.S.</b> in Computer Science
-(Sep 2005 - Jun 2009) <br>
-<a href="https://cs.nju.edu.cn/" target="_blank">Department of Computer Science and Technology</a><br>
-<a href="https://www.nju.edu.cn/" target="_blank">Nanjing University</a>, Nanjing, China<br>
-</li>
-
-</ul>
-
-
-<font size="2">
-<table border="0" cellpadding="2" width="98%" bgcolor="#eee9e9" id="experience">
-<tbody><tr>
-<td align="LEFT"><b><font face="Arial,Helvetica" color="#000000" size="4">Work Experience</font></b></td>
-</tr>
-</tbody></table>
-
-<font size="3">
-<ul>
-<li><b>Staff Research Scientist</b> <br>
-<a href="https://github.com/NVIDIA-NeMo/NeMo" target="_blank">NeMo Speech AI team</a>, NVIDIA Corporation, Santa Clara, CA, USA
-(Apr 2026 - present)  <br>
-Supervisor: Dr. <a href="https://www.linkedin.com/in/boris-ginsburg-2249545/" target="_blank">Boris Ginsburg</a>
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Principal Applied Scientist</b> <br>
-<a href="https://blogs.microsoft.com/blog/2025/01/13/introducing-core-ai-platform-and-tools/" target="_blank">CoreAI</a>, Microsoft Corporation, Redmond, WA, USA
-(Sep 2020 - Apr 2026)  <br>
-Supervisor: Dr. <a href="https://research.microsoft.com/en-us/people/jinyli/" target="_blank">Jinyu Li</a>
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Applied Scientist Intern</b> <br>
-Amazon.com, Inc., Seattle, WA, USA
-(May 2018 - Aug 2018)  <br>
-I worked with Dr. <a href="https://scholar.google.com/citations?user=W_NygtQAAAAJ&hl=en" target="_blank">Xing Fan</a>,
-Dr. <a href="https://sites.google.com/site/ifanchen/home" target="_blank">I-Fan Chen</a> and
-Dr. <a href="https://scholar.google.com/citations?user=kAI8hgkAAAAJ&hl=en" target="_blank">Yuzong Liu</a>
-on <a href="https://www.amazon.science/blog/using-wake-word-acoustics-to-filter-out-background-speech-improves-speech-recognition-by-15-percent" target="_blank">improving</a>
-Seq2Seq ASR model with information extracted from anchored words for Amazon Alexa.
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Research Intern</b> <br>
-Google LLC, Mountain View, CA, USA
-(May 2017 - Aug 2017)  <br>
-I worked with Dr. <a href="https://research.google/people/ArunNarayanan/" target="_blank">Arun Narayanan</a>,
-Dr. <a href="https://scholar.google.com/citations?user=i-JWJ78AAAAJ&hl=en" target="_blank">Rohit Prabhavalkar</a> and
-Dr. <a href="https://research.google/people/IzhakShafran/" target="_blank">Izhak Shafran</a>
-on improving LAS model with time-frequency attention for robust ASR.
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Research Assistant</b> <br>
-<a href="https://www.clsp.jhu.edu/" target="_blank">Center for Language and Speech Processing</a>, Johns Hopkins University, MD, USA
-(Sep 2015 - Aug 2020)  <br>
-I worked with Dr. <a href="http://www.danielpovey.com" target="_blank">Daniel Povey</a> and
-Prof. <a href="https://www.clsp.jhu.edu/faculty-pages/sanjeev/" target="_blank">Sanjeev Khudanpur</a> on speech recognition,
-and contributed to the <a href="https://github.com/kaldi-asr/kaldi" target="_blank">Kaldi</a> project.
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Research Assistant</b> <br>
-<a href="https://www.libd.org/" target="_blank">The Lieber Institute for Brain Development</a>, Baltimore, MD, USA
-(Sep 2014 - Aug 2015)  <br>
-I worked on multi-view learning for genomic and brain imaging data.
-</li>
-</ul>
-
-<font size="2">
-<table border="0" cellpadding="2" width="98%" bgcolor="#eee9e9" id="experience">
-<tbody><tr>
-<td align="LEFT"><b><font face="Arial,Helvetica" color="#000000" size="4">Teaching Experience</font></b></td>
-</tr>
-</tbody></table>
-
-<font size="3">
-<ul>
-<li><b>Teaching Assistant</b> <br>
-Johns Hopkins University
-(Fall 2016, Fall 2014, Spring 2014)  <br>
-Course: <a href="http://www.cs475.org/fall2016/" target="_blank">Machine Learning</a>
-<br>
-Instructor: <a href="https://www.cs.jhu.edu/faculty/mark-dredze/" target="_blank">Mark Dredze</a>
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Teaching Assistant</b> <br>
-Johns Hopkins University
-(Spring 2015)  <br>
-Course: <a href="https://www.cs.jhu.edu/~yarowsky/cs466.html" target="_blank">Information Retrieval and Web Agents</a>
-<br>
-Instructor: <a href="https://www.cs.jhu.edu/faculty/david-yarowsky/" target="_blank">David Yarowsky</a>
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Teaching Assistant</b> <br>
-Johns Hopkins University
-(Fall 2013)  <br>
-Course: <a href="https://piazza.com/configure-classes/fall2013/cs476676/" target="_blank">Machine Learning in Complex Domains</a>
-<br>
-Instructor: <a href="https://www.cs.jhu.edu/faculty/suchi-saria/" target="_blank">Suchi Saria</a>
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Teaching Assistant</b> <br>
-Johns Hopkins University
-(Spring 2013)  <br>
-Course: <a href="https://cirl.lcsr.jhu.edu/sensorbasedrobotics/" target="_blank">Algorithms for Sensor-based Robotics</a>
-<br>
-Instructor: <a href="https://www.cs.jhu.edu/faculty/gregory-hager/" target="_blank">Gregory Hager</a>
-</li>
-</ul>
-
-<font size="3">
-<ul>
-<li><b>Teaching Assistant</b> <br>
-Nanjing University
-(Spring 2010)  <br>
-Course: <a href="https://cs.nju.edu.cn/lining/" target="_blank">Programming in Java</a>
-<br>
-Instructor: <a href="https://cs.nju.edu.cn/lining/" target="_blank">Ning Li</a>
-</li>
-</ul>
-
-<font size="2">
-<table border="0" cellpadding="2" width="98%" bgcolor="#eee9e9" id="talks">
-<tbody><tr>
-<td align="LEFT"><b><font face="Arial,Helvetica" color="#000000" size="4">Talks</font></b></td>
-</tr>
-</tbody></table>
-
-<font size="3">
-<ul>
-<li><a href="https://developer.nvidia.com/gtc/2020/video/s21239-vid" target="_blank">Espresso: A Fast End-to-end Neural Speech Recognition Toolkit</a><br>
-<i>NVIDIA GPU Technology Conference (GTC) 2020</i>
-</li>
-</ul>
-
-<font size="2">
-<table border="0" cellpadding="2" width="98%" bgcolor="#eee9e9" id="publications">
-<tbody><tr>
-<td align="LEFT"><b><font face="Arial,Helvetica" color="#000000" size="4">Publications</font></b></td>
-</tr>
-</tbody></table>
-
-<font size="3">
-
-<ul>
-
-<li><a href="https://arxiv.org/pdf/2503.01743" target="_blank">Phi-4-Mini Technical Report: Compact yet Powerful Multimodal Language Models via Mixture-of-LoRAs</a><br>
-Abdelrahman Abouelenin, Atabak Ashfaq, Adam Atkinson, Hany Awadalla, Nguyen Bach, Jianmin Bao, Alon Benhaim, Martin Cai, Vishrav Chaudhary, Congcong Chen, et al. <br>
-<i>Technical Report (2025)</i>
-</li>
-<br>
-
-<li><a href="https://ietresearch.onlinelibrary.wiley.com/doi/full/10.1049/ell2.70145" target="_blank">LET-NLM-Decoder: A WFST-Based Asynchronous Lazy-Evaluation Token-Group Decoder for First-Pass Neural Language Model Decoding</a><br>
-Fangyi Li, Hang Lv, <b>Yiming Wang</b>, Lei Xie <br>
-<i>Electronics Letters 2025</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/2310.02489.pdf" target="_blank">ResidualTransformer: Residual Low-Rank Learning with Weight-Sharing for Transformer Layers</a><br>
-<b>Yiming Wang</b>, Jinyu Li <br>
-<i>ICASSP 2024</i>
-</li>
-<br>
-
-<li><a href="https://ieeexplore.ieee.org/document/10095591" target="_blank">Data2vec-SG: Improving Self-Supervised Learning Representations for Speech Generation Tasks</a><br>
-Heming Wang, Yao Qian, Hemin Yang, Nauyuki Kanda, Peidong Wang, Takuya Yoshioka, Xiaofei Wang, <b>Yiming Wang</b>, Shujie Liu, Zhuo Chen, DeLiang Wang, Michael Zeng <br>
-<i>ICASSP 2023</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/2211.05564.pdf" target="_blank">Self-Supervised Learning with Bi-label Masked Speech Prediction for Streaming Multi-talker Speech Recognition</a><br>
-Zili Huang, Zhuo Chen, Naoyuki Kanda, Jian Wu, <b>Yiming Wang</b>, Jinyu Li, Takuya Yoshioka, Xiaofei Wang, Peidong Wang <br>
-<i>ICASSP 2023</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/2210.08603.pdf" target="_blank">CTCBERT: Advancing Hidden-unit BERT with CTC Objectives</a><br>
-Ruchao Fan, <b>Yiming Wang</b>, Yashesh Gaur, Jinyu Li <br>
-<i>ICASSP 2023</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2022/wang22m_interspeech.pdf" target="_blank">Supervision-Guided Codebooks for Masked Prediction in Speech Pre-training</a><br>
-<b>Yiming Wang</b><sup>∗</sup>, Chengyi Wang<sup>∗</sup>, Yu Wu, Sanyuan Chen, Jinyu Li, Shujie Liu, Furu Wei <br>
-<i>Interspeech 2022</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/2110.15430.pdf" target="_blank">Improving Noise Robustness of Contrastive Speech Representation Learning with Speech Reconstruction</a><br>
-Heming Wang, Yao Qian, Xiaofei Wang, <b>Yiming Wang</b>, Chengyi Wang, Shujie Liu, Takuya Yoshioka, Jinyu Li, DeLiang Wang <br>
-<i>ICASSP 2022</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/2110.04934.pdf" target="_blank">Wav2vec-Switch: Contrastive Learning from Original-Noisy Speech Pairs for Robust Speech Recognition</a><br>
-<b>Yiming Wang</b>, Jinyu Li, Heming Wang, Yao Qian, Chengyi Wang, Yu Wu <br>
-<i>ICASSP 2022</i>
-</li>
-<br>
-
-<li><a href="https://ieeexplore.ieee.org/document/9381702" target="_blank">LET-Decoder: A WFST-Based Lazy-Evaluation Token-Group Decoder with Exact Lattice Generation</a><br>
-Hang Lv, Daniel Povey, Mahsa Yarmohammadi, Ke Li, <b>Yiming Wang</b>, Lei Xie, Sanjeev Khudanpur <br>
-<i>IEEE Signal Processing Letters 2021</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/2102.04488.pdf" target="_blank">Wake Word Detection with Streaming Transformers</a><br>
-<b>Yiming Wang</b>, Hang Lv, Daniel Povey, Lei Xie, Sanjeev Khudanpur <br>
-<i>ICASSP 2021</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2020/wang20ga_interspeech.pdf" target="_blank">Wake Word Detection with Alignment-Free Lattice-Free MMI</a><br>
-<b>Yiming Wang</b>, Hang Lv, Daniel Povey, Lei Xie, Sanjeev Khudanpur <br>
-<i>Interspeech 2020</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2020/shao20_interspeech.pdf" target="_blank">PyChain: A Fully Parallelized PyTorch Implementation of LF-MMI for End-to-End ASR</a><br>
-Yiwen Shao, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur <br>
-<i>Interspeech 2020</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/1909.08723.pdf" target="_blank">Espresso: A Fast End-to-end Neural Speech Recognition Toolkit</a><br>
-<b>Yiming Wang</b>, Tongfei Chen, Hainan Xu, Shuoyang Ding, Hang Lv, Yiwen Shao, Nanyun Peng, Lei Xie, Shinji Watanabe, Sanjeev Khudanpur <br>
-<i>ASRU 2019</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2019/wang19f_interspeech.pdf" target="_blank">The JHU ASR System for VOiCES from a Distance Challenge 2019</a><br>
-<b>Yiming Wang</b>, David Snyder, Hainan Xu, Vimal Manohar, Phani Sankar Nidadavolu, Daniel Povey, Sanjeev Khudanpur <br>
-<i>Interspeech 2019</i>
-</li>
-<br>
-
-<li><a href="https://www.aclweb.org/anthology/W19-6602.pdf" target="_blank">Robust Document Representations for Cross-Lingual Information Retrieval in Low-Resource Settings</a><br>
-Mahsa Yarmohammadi, Xutai Ma, Sorami Hisamoto, Muhammad Rahman, <b>Yiming Wang</b>, Hainan Xu, Daniel Povey, Philipp Koehn, Kevin Duh <br>
-<i>Machine Translation Summit 2019</i>
-</li>
-<br>
-
-<li><a href="https://arxiv.org/pdf/1902.02383.pdf" target="_blank">End-to-end Anchored Speech Recognition</a><br>
-<b>Yiming Wang</b>, Xing Fan, I-Fan Chen, Yuzong Liu, Tongfei Chen, Björn Hoffmeister <br>
-<i>ICASSP 2019</i>
-</li>
-<br>
-
-<li><a href="https://www.danielpovey.com/files/2018_icassp_lattice_pruning.pdf" target="_blank">A Pruned RNNLM Lattice-rescoring Algorithm for Automatic Speech Recognition</a><br>
-Hainan Xu, Tongfei Chen, Dongji Gao, <b>Yiming Wang</b>, Ke Li, Nagendra Goel, Yishay Carmiel, Daniel Povey, Sanjeev Khudanpur <br>
-<i>ICASSP 2018</i>
-</li>
-<br>
-
-<li><a href="https://danielpovey.com/files/2018_icassp_rnnlm.pdf" target="_blank">Neural Network Language Modeling with Letter-based Features and Importance Sampling</a><br>
-Hainan Xu, Ke Li, <b>Yiming Wang</b>, Jian Wang, Shiyin Kang, Xie Chen, Daniel Povey, Sanjeev Khudanpur <br>
-<i>ICASSP 2018</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2018/li18e_interspeech.pdf" target="_blank">Recurrent Neural Network Language Model Adaptation for Conversational Speech Recognition</a><br>
-Ke Li, Hainan Xu, <b>Yiming Wang</b>, Daniel Povey and Sanjeev Khudanpur <br>
-<i>Interspeech 2018</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2018/chen18f_interspeech.pdf" target="_blank">A GPU-based WFST Decoder with Exact Lattice Generation</a><br>
-Zhehuai Chen, Justin Luitjens, Hainan Xu, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur <br>
-<i>Interspeech 2018</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2018/povey18_interspeech.pdf" target="_blank">Semi-Orthogonal Low-Rank Matrix Factorization for Deep Neural Networks</a><br>
-Daniel Povey, Gaofeng Cheng, <b>Yiming Wang</b>, Ke Li, Hainan Xu, Mahsa Yarmohamadi, Sanjeev Khudanpur <br>
-<i>Interspeech 2018</i>
-</li>
-<br>
-
-<li><a href="https://www.danielpovey.com/files/2017_spl_tdnnlstm.pdf" target="_blank">Low Latency Acoustic Modeling Using Temporal Convolution and LSTMs</a><br>
-Vijayaditya Peddinti, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur <br>
-<i>IEEE Signal Processing Letters 2018</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2017/wang17h_interspeech.pdf" target="_blank">Backstitch: Counteracting Finite-sample Bias via Negative Steps</a><br>
-<b>Yiming Wang</b>, Vijayaditya Peddinti, Xiaohui Zhang, Daniel Povey, Sanjeev Khudanpur <br>
-<i>Interspeech 2017</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2017/trmal17_interspeech.pdf" target="_blank">The Kaldi OpenKWS System: Improving Low Resource Keyword Search</a><br>
-Jan Trmal, Matthew Wiesner, Vijayaditya Peddinti, Xiaohui Zhang, Pegah Ghahremani, <b>Yiming Wang</b>, Vimal Manohar, Hainan Xu, Daniel Povey, Sanjeev Khudanpur <br>
-<i>Interspeech 2017</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2016/peddinti16_interspeech.pdf" target="_blank">Far-Field ASR Without Parallel Data</a><br>
-Vijayaditya Peddinti, Vimal Manohar, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur <br>
-<i>Interspeech 2016</i>
-</li>
-<br>
-
-<li><a href="https://www.isca-speech.org/archive/pdfs/interspeech_2016/povey16_interspeech.pdf" target="_blank">Purely Sequence-Trained Neural Networks for ASR Based on Lattice-Free MMI</a><br>
-Daniel Povey, Vijayaditya Peddinti, Daniel Galvez, Pegah Ghahrmani, Vimal Manohar, Xingyu Na, <b>Yiming Wang</b>, Sanjeev Khudanpur <br>
-<i>Interspeech 2016</i>
-</li>
-<br>
-
-<li><a href="https://link.springer.com/content/pdf/10.1007/s11042-014-2420-5.pdf" target="_blank">Weakly-supervised Region Annotation for Understanding Scene Images</a><br>
-Hao Wang, Tong Lu, <b>Yiming Wang</b>, Palaiahnakote Shivakumara, Chew Lim Tan <br>
-<i>Multimedia Tools and Applications 2016</i>
-</li>
-<br>
-
-<li><a href="https://proceedings.neurips.cc/paper/2014/file/2a27b8144ac02f67687f76782a3b5d8f-Paper.pdf" target="_blank">Accelerated Mini-batch Randomized Block Coordinate Descent Method</a><br>
-Tuo Zhao, Mo Yu, <b>Yiming Wang</b>, Raman Arora, Han Liu <br>
-<i>NeurIPS 2014</i>
-</li>
-<br>
-
-<li><a href="https://www.aclweb.org/anthology/P14-2110.pdf" target="_blank">Learning Polylingual Topic Models from Code-Switched Social Media Documents</a><br>
-Nanyun Peng, <b>Yiming Wang</b>, Mark Dredze <br>
-<i>ACL 2014</i>
-</li>
-<br>
-
-<li><a href="https://www.researchgate.net/profile/Tong_Lu4/publication/220932659_3D_Model_Comparison_through_Kernel_Density_Matching/links/02e7e51adcb93eba69000000.pdf" target="_blank">3D Model Comparison through Kernel Density Matching</a><br>
-<b>Yiming Wang</b>, Tong Lu, Rongjun Gao, Wenyin Liu <br>
-<i>ICPR 2010</i>
-</li>
-<br>
-
-<li><a href="https://www.researchgate.net/profile/Zhengxing-Sun/publication/225111372_QuickDiagram_A_System_for_Online_Sketching_and_Understanding_of_Diagrams/links/54cdd78a0cf29ca810f8ec3e/QuickDiagram-A-System-for-Online-Sketching-and-Understanding-of-Diagrams.pdf" target="_blank">QuickDiagram: A System for Online Sketching and Understanding of Diagrams</a><br>
-Wenyin Liu, Xiangfei Kong, <b>Yiming Wang</b>, Chester Wan, Cheuk-Yin Ho, Tong Lu, Zhengxing Sun <br>
-<i>International Workshop on Graphics Recognition 2009</i>
-</li>
-<br>
-
-</ul>
-
-
-<table border="0" cellpadding="2" width="98%" bgcolor="#eee9e9" id="patents">
-<tbody><tr>
-<td align="LEFT"><b><font face="Arial,Helvetica" color="#000000" size="4">Patents</font></b></td>
-</tr>
-</tbody></table>
-
-<font size="3">
-
-<ul>
-
-<li><a href="https://patentimages.storage.googleapis.com/6a/65/23/76888a6dc45782/US10923111.pdf" target="_blank">Speech Detection and Speech Recognition</a><br>
-Xing Fan, I-Fan Chen, Yuzong Liu, Bjorn Hoffmeister, <b>Yiming Wang</b>, Tongfei Chen <br>
-<i>US Patent 10,923,111 (2021)</i>
-</li>
-<br>
-
-<li><a href="https://patentimages.storage.googleapis.com/df/47/8b/e4ebaf39244d81/CN101882150B.pdf" target="_blank">3D Model Comparison and Retrieval Method based on Kernel Density Estimation</a><br>
-Tong Lu, <b>Yiming Wang</b> <br>
-<i>CN Patent 101,882,150 (2012)</i>
-</li>
-<br>
-
-</ul>
-
-<hr>
-
-<font size="3">
-<script language="javascript"> 
-document.write("<i>Last updated "+document.lastModified+" by Yiming Wang<I>"); 
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-brand">Yiming Wang</span>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#experience">Experience</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#publications">Publications</a>
+      <a href="#patents">Patents</a>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero" id="about">
+    <a href="./yiming.jpg" target="_blank" rel="noopener">
+      <img class="hero-photo" src="yiming.jpg" alt="Yiming Wang">
+    </a>
+    <div>
+      <h1>Yiming Wang <span class="han">王一鸣</span></h1>
+      <p class="role">Research Scientist <span class="at">@ NVIDIA</span></p>
+      <p class="affil">
+        <a href="https://github.com/NVIDIA-NeMo/NeMo" target="_blank" rel="noopener">NeMo Speech Team</a>
+        &middot; Santa Clara, CA, USA
+      </p>
+      <div class="chips">
+        <a class="chip" id="email-chip" href="#" data-user="freewym" data-domain="gmail.com" rel="nofollow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+          Email
+        </a>
+        <a class="chip" href="https://scholar.google.com/citations?user=bndKId8AAAAJ&hl=en" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+          Google Scholar
+        </a>
+        <a class="chip" href="https://github.com/freewym" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.74-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.4 9.4 0 0 1 2.5-.34c.85 0 1.71.12 2.5.34 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.71 1.03 1.62 1.03 2.74 0 3.92-2.34 4.78-4.57 5.04.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+          GitHub
+        </a>
+        <a class="chip" href="https://www.linkedin.com/in/freewym" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.99H5.67v8.35h2.67zM7 8.8a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.54v-4.57c0-2.45-1.31-3.59-3.06-3.59-1.41 0-2.04.78-2.39 1.32v-1.13h-2.67c.04.75 0 8.35 0 8.35h2.67v-4.66c0-.24.02-.48.09-.65.19-.48.63-.97 1.36-.97.96 0 1.34.73 1.34 1.8v4.48h2.66z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+      <div class="interests">
+        <span class="tag">Speech Recognition</span>
+        <span class="tag">Multimodal LLMs</span>
+        <span class="tag">Self-Supervised Learning</span>
+        <span class="tag">Machine Learning</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="sec-head"><h2>Biography</h2></div>
+    <div class="prose">
+      <p>
+        I am a Research Scientist at NVIDIA, working on Multimodal LLMs. Before joining NVIDIA, I worked at Microsoft
+        <a href="https://blogs.microsoft.com/blog/2025/01/13/introducing-core-ai-platform-and-tools/" target="_blank" rel="noopener">CoreAI</a>
+        under <a href="https://research.microsoft.com/en-us/people/jinyli/" target="_blank" rel="noopener">Jinyu Li</a>,
+        after receiving my Ph.D. in Computer Science from
+        <a href="https://www.jhu.edu/" target="_blank" rel="noopener">Johns Hopkins University</a>.
+        At JHU I was affiliated with the
+        <a href="https://www.clsp.jhu.edu/" target="_blank" rel="noopener">Center for Language and Speech Processing (CLSP)</a>,
+        advised by Prof. <a href="https://www.clsp.jhu.edu/faculty-pages/sanjeev/" target="_blank" rel="noopener">Sanjeev Khudanpur</a>
+        and former JHU Prof. <a href="https://www.danielpovey.com" target="_blank" rel="noopener">Daniel Povey</a>.
+      </p>
+      <p>
+        My work centers on speech recognition (ASR), with broad interests in machine learning and natural language processing.
+        I am one of the major contributors to the
+        <a href="https://github.com/kaldi-asr/kaldi" target="_blank" rel="noopener">Kaldi</a> project and the owner of the
+        open-source end-to-end ASR toolkit <a href="https://github.com/freewym/espresso" target="_blank" rel="noopener">Espresso</a>.
+        I interned at Google's speech team and Amazon's Alexa ASR team in 2017 and 2018 respectively, working on end-to-end ASR.
+      </p>
+      <p>
+        I received my B.S. and M.S. in Computer Science from
+        <a href="https://www.nju.edu.cn/" target="_blank" rel="noopener">Nanjing University</a> in 2009 and 2012,
+        advised by Prof. <a href="https://cs.nju.edu.cn/lutong/" target="_blank" rel="noopener">Tong Lu</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="sec-head"><h2>Education</h2></div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Ph.D. in Computer Science</p>
+          <span class="card-date">Sep 2012 – Sep 2020</span>
+        </div>
+        <p class="card-org">
+          <a href="https://www.cs.jhu.edu/" target="_blank" rel="noopener">Department of Computer Science</a>,
+          <a href="https://www.jhu.edu/" target="_blank" rel="noopener">Johns Hopkins University</a> &middot; Baltimore, MD, USA
+        </p>
+        <p class="card-meta">
+          Advisors: Prof. <a href="https://www.clsp.jhu.edu/faculty-pages/sanjeev/" target="_blank" rel="noopener">Sanjeev Khudanpur</a>
+          &amp; Dr. <a href="https://www.danielpovey.com" target="_blank" rel="noopener">Daniel Povey</a><br>
+          Thesis: <a href="https://jscholarship.library.jhu.edu/handle/1774.2/64380" target="_blank" rel="noopener">Wake Word Detection and its Applications</a>
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">M.S. in Computer Science</p>
+          <span class="card-date">Sep 2009 – Jun 2012</span>
+        </div>
+        <p class="card-org">
+          <a href="https://cs.nju.edu.cn/" target="_blank" rel="noopener">Department of Computer Science and Technology</a>,
+          <a href="https://www.nju.edu.cn/" target="_blank" rel="noopener">Nanjing University</a> &middot; Nanjing, China
+        </p>
+        <p class="card-meta">
+          Advisor: Prof. <a href="https://cs.nju.edu.cn/lutong/" target="_blank" rel="noopener">Tong Lu</a><br>
+          Thesis: <a href="http://cdmd.cnki.com.cn/Article/CDMD-10284-1012376748.htm" target="_blank" rel="noopener">Scene Image Understanding Based on Topic Modeling</a> (in Chinese)
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">B.S. in Computer Science</p>
+          <span class="card-date">Sep 2005 – Jun 2009</span>
+        </div>
+        <p class="card-org">
+          <a href="https://cs.nju.edu.cn/" target="_blank" rel="noopener">Department of Computer Science and Technology</a>,
+          <a href="https://www.nju.edu.cn/" target="_blank" rel="noopener">Nanjing University</a> &middot; Nanjing, China
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="sec-head"><h2>Work Experience</h2></div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Staff Research Scientist</p>
+          <span class="card-date">Apr 2026 – Present</span>
+        </div>
+        <p class="card-org">
+          <a href="https://github.com/NVIDIA-NeMo/NeMo" target="_blank" rel="noopener">NeMo Speech Team</a>, NVIDIA Corporation &middot; Santa Clara, CA, USA
+        </p>
+        <p class="card-meta">Supervisor: Dr. <a href="https://www.linkedin.com/in/boris-ginsburg-2249545/" target="_blank" rel="noopener">Boris Ginsburg</a></p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Principal Applied Scientist</p>
+          <span class="card-date">Sep 2025 – Mar 2026</span>
+        </div>
+        <div class="card-top card-top-sub">
+          <p class="card-title">Senior Applied Scientist</p>
+          <span class="card-date">Sep 2020 – Aug 2025</span>
+        </div>
+        <p class="card-org">
+          <a href="https://blogs.microsoft.com/blog/2025/01/13/introducing-core-ai-platform-and-tools/" target="_blank" rel="noopener">CoreAI</a>, Microsoft Corporation &middot; Redmond, WA, USA
+        </p>
+        <p class="card-meta">Supervisor: Dr. <a href="https://research.microsoft.com/en-us/people/jinyli/" target="_blank" rel="noopener">Jinyu Li</a></p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Applied Scientist Intern</p>
+          <span class="card-date">May 2018 – Aug 2018</span>
+        </div>
+        <p class="card-org">Amazon.com, Inc. &middot; Seattle, WA, USA</p>
+        <p class="card-meta">
+          Worked with Dr. <a href="https://scholar.google.com/citations?user=W_NygtQAAAAJ&hl=en" target="_blank" rel="noopener">Xing Fan</a>,
+          Dr. <a href="https://sites.google.com/site/ifanchen/home" target="_blank" rel="noopener">I-Fan Chen</a> and
+          Dr. <a href="https://scholar.google.com/citations?user=kAI8hgkAAAAJ&hl=en" target="_blank" rel="noopener">Yuzong Liu</a> on
+          <a href="https://www.amazon.science/blog/using-wake-word-acoustics-to-filter-out-background-speech-improves-speech-recognition-by-15-percent" target="_blank" rel="noopener">improving</a>
+          Seq2Seq ASR with information extracted from anchored words for Amazon Alexa.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Research Intern</p>
+          <span class="card-date">May 2017 – Aug 2017</span>
+        </div>
+        <p class="card-org">Google LLC &middot; Mountain View, CA, USA</p>
+        <p class="card-meta">
+          Worked with Dr. <a href="https://research.google/people/ArunNarayanan/" target="_blank" rel="noopener">Arun Narayanan</a>,
+          Dr. <a href="https://scholar.google.com/citations?user=i-JWJ78AAAAJ&hl=en" target="_blank" rel="noopener">Rohit Prabhavalkar</a> and
+          Dr. <a href="https://research.google/people/IzhakShafran/" target="_blank" rel="noopener">Izhak Shafran</a> on improving the LAS model with time-frequency attention for robust ASR.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Research Assistant</p>
+          <span class="card-date">Sep 2015 – Aug 2020</span>
+        </div>
+        <p class="card-org">
+          <a href="https://www.clsp.jhu.edu/" target="_blank" rel="noopener">Center for Language and Speech Processing</a>, Johns Hopkins University &middot; Baltimore, MD, USA
+        </p>
+        <p class="card-meta">
+          Worked with Dr. <a href="http://www.danielpovey.com" target="_blank" rel="noopener">Daniel Povey</a> and
+          Prof. <a href="https://www.clsp.jhu.edu/faculty-pages/sanjeev/" target="_blank" rel="noopener">Sanjeev Khudanpur</a> on speech recognition,
+          contributing to the <a href="https://github.com/kaldi-asr/kaldi" target="_blank" rel="noopener">Kaldi</a> project.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Research Assistant</p>
+          <span class="card-date">Sep 2014 – Aug 2015</span>
+        </div>
+        <p class="card-org">
+          <a href="https://www.libd.org/" target="_blank" rel="noopener">The Lieber Institute for Brain Development</a> &middot; Baltimore, MD, USA
+        </p>
+        <p class="card-meta">Worked on multi-view learning for genomic and brain imaging data.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEACHING -->
+  <section id="teaching">
+    <details class="collapsible">
+    <summary class="sec-head"><h2>Teaching Experience</h2><span class="fold-hint"></span></summary>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Teaching Assistant &middot; <a href="http://www.cs475.org/fall2016/" target="_blank" rel="noopener">Machine Learning</a></p>
+          <span class="card-date">Fall 2016, Fall &amp; Spring 2014</span>
+        </div>
+        <p class="card-org">Johns Hopkins University</p>
+        <p class="card-meta">Instructor: <a href="https://www.cs.jhu.edu/faculty/mark-dredze/" target="_blank" rel="noopener">Mark Dredze</a></p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Teaching Assistant &middot; <a href="https://www.cs.jhu.edu/~yarowsky/cs466.html" target="_blank" rel="noopener">Information Retrieval and Web Agents</a></p>
+          <span class="card-date">Spring 2015</span>
+        </div>
+        <p class="card-org">Johns Hopkins University</p>
+        <p class="card-meta">Instructor: <a href="https://www.cs.jhu.edu/faculty/david-yarowsky/" target="_blank" rel="noopener">David Yarowsky</a></p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Teaching Assistant &middot; <a href="https://piazza.com/configure-classes/fall2013/cs476676/" target="_blank" rel="noopener">Machine Learning in Complex Domains</a></p>
+          <span class="card-date">Fall 2013</span>
+        </div>
+        <p class="card-org">Johns Hopkins University</p>
+        <p class="card-meta">Instructor: <a href="https://www.cs.jhu.edu/faculty/suchi-saria/" target="_blank" rel="noopener">Suchi Saria</a></p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Teaching Assistant &middot; <a href="https://cirl.lcsr.jhu.edu/sensorbasedrobotics/" target="_blank" rel="noopener">Algorithms for Sensor-based Robotics</a></p>
+          <span class="card-date">Spring 2013</span>
+        </div>
+        <p class="card-org">Johns Hopkins University</p>
+        <p class="card-meta">Instructor: <a href="https://www.cs.jhu.edu/faculty/gregory-hager/" target="_blank" rel="noopener">Gregory Hager</a></p>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <p class="card-title">Teaching Assistant &middot; <a href="https://cs.nju.edu.cn/lining/" target="_blank" rel="noopener">Programming in Java</a></p>
+          <span class="card-date">Spring 2010</span>
+        </div>
+        <p class="card-org">Nanjing University</p>
+        <p class="card-meta">Instructor: <a href="https://cs.nju.edu.cn/lining/" target="_blank" rel="noopener">Ning Li</a></p>
+      </div>
+    </div>
+    </details>
+  </section>
+
+  <!-- TALKS -->
+  <section id="talks">
+    <div class="sec-head"><h2>Invited Talks</h2></div>
+    <div class="cards">
+      <div class="card talk">
+        <p class="card-title"><a href="https://developer.nvidia.com/gtc/2020/video/s21239-vid" target="_blank" rel="noopener">Espresso: A Fast End-to-end Neural Speech Recognition Toolkit</a></p>
+        <p class="card-meta">NVIDIA GPU Technology Conference (GTC) 2020</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <div class="sec-head">
+      <h2>Publications</h2>
+      <span class="count" id="pub-count"></span>
+    </div>
+    <div class="pub-controls">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="first">First-author</button>
+    </div>
+    <div class="pub-list" id="pub-list">
+
+      <div class="pub" data-first="false"><span class="year">2025</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/2503.01743" target="_blank" rel="noopener">Phi-4-Mini Technical Report: Compact yet Powerful Multimodal Language Models via Mixture-of-LoRAs</a>
+        <span class="authors">Abdelrahman Abouelenin, Atabak Ashfaq, Adam Atkinson, Hany Awadalla, Nguyen Bach, Jianmin Bao, Alon Benhaim, Martin Cai, Vishrav Chaudhary, Congcong Chen, et al.</span>
+        <span class="venue">Technical Report 2025</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2025</span><div>
+        <a class="ptitle" href="https://ietresearch.onlinelibrary.wiley.com/doi/full/10.1049/ell2.70145" target="_blank" rel="noopener">LET-NLM-Decoder: A WFST-Based Asynchronous Lazy-Evaluation Token-Group Decoder for First-Pass Neural Language Model Decoding</a>
+        <span class="authors">Fangyi Li, Hang Lv, <b>Yiming Wang</b>, Lei Xie</span>
+        <span class="venue">Electronics Letters 2025</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2024</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/2310.02489.pdf" target="_blank" rel="noopener">ResidualTransformer: Residual Low-Rank Learning with Weight-Sharing for Transformer Layers</a>
+        <span class="authors"><b>Yiming Wang</b>, Jinyu Li</span>
+        <span class="venue">ICASSP 2024</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2023</span><div>
+        <a class="ptitle" href="https://ieeexplore.ieee.org/document/10095591" target="_blank" rel="noopener">Data2vec-SG: Improving Self-Supervised Learning Representations for Speech Generation Tasks</a>
+        <span class="authors">Heming Wang, Yao Qian, Hemin Yang, Naoyuki Kanda, Peidong Wang, Takuya Yoshioka, Xiaofei Wang, <b>Yiming Wang</b>, Shujie Liu, Zhuo Chen, DeLiang Wang, Michael Zeng</span>
+        <span class="venue">ICASSP 2023</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2023</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/2211.05564.pdf" target="_blank" rel="noopener">Self-Supervised Learning with Bi-label Masked Speech Prediction for Streaming Multi-talker Speech Recognition</a>
+        <span class="authors">Zili Huang, Zhuo Chen, Naoyuki Kanda, Jian Wu, <b>Yiming Wang</b>, Jinyu Li, Takuya Yoshioka, Xiaofei Wang, Peidong Wang</span>
+        <span class="venue">ICASSP 2023</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2023</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/2210.08603.pdf" target="_blank" rel="noopener">CTCBERT: Advancing Hidden-unit BERT with CTC Objectives</a>
+        <span class="authors">Ruchao Fan, <b>Yiming Wang</b>, Yashesh Gaur, Jinyu Li</span>
+        <span class="venue">ICASSP 2023</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2022</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2022/wang22m_interspeech.pdf" target="_blank" rel="noopener">Supervision-Guided Codebooks for Masked Prediction in Speech Pre-training</a>
+        <span class="authors"><b>Yiming Wang</b><sup>∗</sup>, Chengyi Wang<sup>∗</sup>, Yu Wu, Sanyuan Chen, Jinyu Li, Shujie Liu, Furu Wei</span>
+        <span class="venue">Interspeech 2022</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2022</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/2110.15430.pdf" target="_blank" rel="noopener">Improving Noise Robustness of Contrastive Speech Representation Learning with Speech Reconstruction</a>
+        <span class="authors">Heming Wang, Yao Qian, Xiaofei Wang, <b>Yiming Wang</b>, Chengyi Wang, Shujie Liu, Takuya Yoshioka, Jinyu Li, DeLiang Wang</span>
+        <span class="venue">ICASSP 2022</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2022</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/2110.04934.pdf" target="_blank" rel="noopener">Wav2vec-Switch: Contrastive Learning from Original-Noisy Speech Pairs for Robust Speech Recognition</a>
+        <span class="authors"><b>Yiming Wang</b>, Jinyu Li, Heming Wang, Yao Qian, Chengyi Wang, Yu Wu</span>
+        <span class="venue">ICASSP 2022</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2021</span><div>
+        <a class="ptitle" href="https://ieeexplore.ieee.org/document/9381702" target="_blank" rel="noopener">LET-Decoder: A WFST-Based Lazy-Evaluation Token-Group Decoder with Exact Lattice Generation</a>
+        <span class="authors">Hang Lv, Daniel Povey, Mahsa Yarmohammadi, Ke Li, <b>Yiming Wang</b>, Lei Xie, Sanjeev Khudanpur</span>
+        <span class="venue">IEEE Signal Processing Letters 2021</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2021</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/2102.04488.pdf" target="_blank" rel="noopener">Wake Word Detection with Streaming Transformers</a>
+        <span class="authors"><b>Yiming Wang</b>, Hang Lv, Daniel Povey, Lei Xie, Sanjeev Khudanpur</span>
+        <span class="venue">ICASSP 2021</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2020</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2020/wang20ga_interspeech.pdf" target="_blank" rel="noopener">Wake Word Detection with Alignment-Free Lattice-Free MMI</a>
+        <span class="authors"><b>Yiming Wang</b>, Hang Lv, Daniel Povey, Lei Xie, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2020</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2020</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2020/shao20_interspeech.pdf" target="_blank" rel="noopener">PyChain: A Fully Parallelized PyTorch Implementation of LF-MMI for End-to-End ASR</a>
+        <span class="authors">Yiwen Shao, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2020</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2019</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/1909.08723.pdf" target="_blank" rel="noopener">Espresso: A Fast End-to-end Neural Speech Recognition Toolkit</a>
+        <span class="authors"><b>Yiming Wang</b>, Tongfei Chen, Hainan Xu, Shuoyang Ding, Hang Lv, Yiwen Shao, Nanyun Peng, Lei Xie, Shinji Watanabe, Sanjeev Khudanpur</span>
+        <span class="venue">ASRU 2019</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2019</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2019/wang19f_interspeech.pdf" target="_blank" rel="noopener">The JHU ASR System for VOiCES from a Distance Challenge 2019</a>
+        <span class="authors"><b>Yiming Wang</b>, David Snyder, Hainan Xu, Vimal Manohar, Phani Sankar Nidadavolu, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2019</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2019</span><div>
+        <a class="ptitle" href="https://www.aclweb.org/anthology/W19-6602.pdf" target="_blank" rel="noopener">Robust Document Representations for Cross-Lingual Information Retrieval in Low-Resource Settings</a>
+        <span class="authors">Mahsa Yarmohammadi, Xutai Ma, Sorami Hisamoto, Muhammad Rahman, <b>Yiming Wang</b>, Hainan Xu, Daniel Povey, Philipp Koehn, Kevin Duh</span>
+        <span class="venue">Machine Translation Summit 2019</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2019</span><div>
+        <a class="ptitle" href="https://arxiv.org/pdf/1902.02383.pdf" target="_blank" rel="noopener">End-to-end Anchored Speech Recognition</a>
+        <span class="authors"><b>Yiming Wang</b>, Xing Fan, I-Fan Chen, Yuzong Liu, Tongfei Chen, Björn Hoffmeister</span>
+        <span class="venue">ICASSP 2019</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2018</span><div>
+        <a class="ptitle" href="https://www.danielpovey.com/files/2018_icassp_lattice_pruning.pdf" target="_blank" rel="noopener">A Pruned RNNLM Lattice-rescoring Algorithm for Automatic Speech Recognition</a>
+        <span class="authors">Hainan Xu, Tongfei Chen, Dongji Gao, <b>Yiming Wang</b>, Ke Li, Nagendra Goel, Yishay Carmiel, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">ICASSP 2018</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2018</span><div>
+        <a class="ptitle" href="https://danielpovey.com/files/2018_icassp_rnnlm.pdf" target="_blank" rel="noopener">Neural Network Language Modeling with Letter-based Features and Importance Sampling</a>
+        <span class="authors">Hainan Xu, Ke Li, <b>Yiming Wang</b>, Jian Wang, Shiyin Kang, Xie Chen, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">ICASSP 2018</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2018</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2018/li18e_interspeech.pdf" target="_blank" rel="noopener">Recurrent Neural Network Language Model Adaptation for Conversational Speech Recognition</a>
+        <span class="authors">Ke Li, Hainan Xu, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2018</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2018</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2018/chen18f_interspeech.pdf" target="_blank" rel="noopener">A GPU-based WFST Decoder with Exact Lattice Generation</a>
+        <span class="authors">Zhehuai Chen, Justin Luitjens, Hainan Xu, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2018</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2018</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2018/povey18_interspeech.pdf" target="_blank" rel="noopener">Semi-Orthogonal Low-Rank Matrix Factorization for Deep Neural Networks</a>
+        <span class="authors">Daniel Povey, Gaofeng Cheng, <b>Yiming Wang</b>, Ke Li, Hainan Xu, Mahsa Yarmohammadi, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2018</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2018</span><div>
+        <a class="ptitle" href="https://www.danielpovey.com/files/2017_spl_tdnnlstm.pdf" target="_blank" rel="noopener">Low Latency Acoustic Modeling Using Temporal Convolution and LSTMs</a>
+        <span class="authors">Vijayaditya Peddinti, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">IEEE Signal Processing Letters 2018</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2017</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2017/wang17h_interspeech.pdf" target="_blank" rel="noopener">Backstitch: Counteracting Finite-sample Bias via Negative Steps</a>
+        <span class="authors"><b>Yiming Wang</b>, Vijayaditya Peddinti, Xiaohui Zhang, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2017</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2017</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2017/trmal17_interspeech.pdf" target="_blank" rel="noopener">The Kaldi OpenKWS System: Improving Low Resource Keyword Search</a>
+        <span class="authors">Jan Trmal, Matthew Wiesner, Vijayaditya Peddinti, Xiaohui Zhang, Pegah Ghahremani, <b>Yiming Wang</b>, Vimal Manohar, Hainan Xu, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2017</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2016</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2016/peddinti16_interspeech.pdf" target="_blank" rel="noopener">Far-Field ASR Without Parallel Data</a>
+        <span class="authors">Vijayaditya Peddinti, Vimal Manohar, <b>Yiming Wang</b>, Daniel Povey, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2016</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2016</span><div>
+        <a class="ptitle" href="https://www.isca-speech.org/archive/pdfs/interspeech_2016/povey16_interspeech.pdf" target="_blank" rel="noopener">Purely Sequence-Trained Neural Networks for ASR Based on Lattice-Free MMI</a>
+        <span class="authors">Daniel Povey, Vijayaditya Peddinti, Daniel Galvez, Pegah Ghahremani, Vimal Manohar, Xingyu Na, <b>Yiming Wang</b>, Sanjeev Khudanpur</span>
+        <span class="venue">Interspeech 2016</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2016</span><div>
+        <a class="ptitle" href="https://link.springer.com/content/pdf/10.1007/s11042-014-2420-5.pdf" target="_blank" rel="noopener">Weakly-supervised Region Annotation for Understanding Scene Images</a>
+        <span class="authors">Hao Wang, Tong Lu, <b>Yiming Wang</b>, Palaiahnakote Shivakumara, Chew Lim Tan</span>
+        <span class="venue">Multimedia Tools and Applications 2016</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2014</span><div>
+        <a class="ptitle" href="https://proceedings.neurips.cc/paper/2014/file/2a27b8144ac02f67687f76782a3b5d8f-Paper.pdf" target="_blank" rel="noopener">Accelerated Mini-batch Randomized Block Coordinate Descent Method</a>
+        <span class="authors">Tuo Zhao, Mo Yu, <b>Yiming Wang</b>, Raman Arora, Han Liu</span>
+        <span class="venue">NeurIPS 2014</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2014</span><div>
+        <a class="ptitle" href="https://www.aclweb.org/anthology/P14-2110.pdf" target="_blank" rel="noopener">Learning Polylingual Topic Models from Code-Switched Social Media Documents</a>
+        <span class="authors">Nanyun Peng, <b>Yiming Wang</b>, Mark Dredze</span>
+        <span class="venue">ACL 2014</span></div></div>
+
+      <div class="pub" data-first="true"><span class="year">2010</span><div>
+        <a class="ptitle" href="https://www.researchgate.net/profile/Tong_Lu4/publication/220932659_3D_Model_Comparison_through_Kernel_Density_Matching/links/02e7e51adcb93eba69000000.pdf" target="_blank" rel="noopener">3D Model Comparison through Kernel Density Matching</a>
+        <span class="authors"><b>Yiming Wang</b>, Tong Lu, Rongjun Gao, Wenyin Liu</span>
+        <span class="venue">ICPR 2010</span></div></div>
+
+      <div class="pub" data-first="false"><span class="year">2009</span><div>
+        <a class="ptitle" href="https://www.researchgate.net/profile/Zhengxing-Sun/publication/225111372_QuickDiagram_A_System_for_Online_Sketching_and_Understanding_of_Diagrams/links/54cdd78a0cf29ca810f8ec3e/QuickDiagram-A-System-for-Online-Sketching-and-Understanding-of-Diagrams.pdf" target="_blank" rel="noopener">QuickDiagram: A System for Online Sketching and Understanding of Diagrams</a>
+        <span class="authors">Wenyin Liu, Xiangfei Kong, <b>Yiming Wang</b>, Chester Wan, Cheuk-Yin Ho, Tong Lu, Zhengxing Sun</span>
+        <span class="venue">International Workshop on Graphics Recognition 2009</span></div></div>
+
+    </div>
+  </section>
+
+  <!-- PATENTS -->
+  <section id="patents">
+    <div class="sec-head"><h2>Patents</h2></div>
+    <div class="cards">
+      <div class="card talk">
+        <p class="card-title"><a href="https://patentimages.storage.googleapis.com/6a/65/23/76888a6dc45782/US10923111.pdf" target="_blank" rel="noopener">Speech Detection and Speech Recognition</a></p>
+        <p class="card-org">Xing Fan, I-Fan Chen, Yuzong Liu, Bjorn Hoffmeister, <b>Yiming Wang</b>, Tongfei Chen</p>
+        <p class="card-meta">US Patent 10,923,111 (2021)</p>
+      </div>
+      <div class="card talk">
+        <p class="card-title"><a href="https://patentimages.storage.googleapis.com/df/47/8b/e4ebaf39244d81/CN101882150B.pdf" target="_blank" rel="noopener">3D Model Comparison and Retrieval Method based on Kernel Density Estimation</a></p>
+        <p class="card-org">Tong Lu, <b>Yiming Wang</b></p>
+        <p class="card-meta">CN Patent 101,882,150 (2012)</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="visitor-map" id="visitor-map">
+    <div class="map-embed">
+      <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=h-SH0mz3R7fd2paFNdUMg1-w3cjdKy2I88QM9z-yxEA&cl=ffffff&w=a"></script>
+    </div>
+  </div>
+
+  <footer>
+    <span>&copy; <span id="year"></span> Yiming Wang &middot; <span id="updated"></span></span>
+    <span class="visits">
+      <a href="https://statcounter.com/p12446420/?guest=1" target="_blank" rel="noopener" title="View visitor stats">
+        <!-- Statcounter visible counter -->
+        <script type="text/javascript">
+          var sc_project=12446420;
+          var sc_invisible=0;
+          var sc_security="850eaf16";
+          var sc_https=1;
+          var sc_text=2;
+        </script>
+        <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+        <noscript><img class="statcounter" src="https://c.statcounter.com/12446420/0/850eaf16/0/" alt="Web Analytics" referrerPolicy="no-referrer-when-downgrade"></noscript>
+      </a>
+      &nbsp;visits
+    </span>
+  </footer>
+
+</div>
+
+<script>
+// Publication filter
+(function () {
+  var list = document.getElementById('pub-list');
+  var pubs = Array.prototype.slice.call(list.querySelectorAll('.pub'));
+  var countEl = document.getElementById('pub-count');
+  var buttons = document.querySelectorAll('.pub-controls button');
+
+  function apply(filter) {
+    var shown = 0;
+    pubs.forEach(function (p) {
+      var ok = filter === 'all' || p.getAttribute('data-first') === 'true';
+      p.style.display = ok ? '' : 'none';
+      if (ok) shown++;
+    });
+    countEl.textContent = shown + (filter === 'first' ? ' first-author' : '') + ' papers';
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      buttons.forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      apply(b.getAttribute('data-filter'));
+    });
+  });
+  apply('all');
+})();
+
+// Theme toggle (manual override of the OS preference)
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  function currentlyDark() {
+    var t = root.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  btn.addEventListener('click', function () {
+    var next = currentlyDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+})();
+
+// Scroll-spy: highlight the nav link for the section currently in view
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  if (!links.length || !('IntersectionObserver' in window)) return;
+  var map = {};
+  var sections = links.map(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var sec = document.getElementById(id);
+    if (sec) map[id] = a;
+    return sec;
+  }).filter(Boolean);
+
+  function setActive(id) {
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (map[id]) map[id].classList.add('active');
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach(function (s) { observer.observe(s); });
+})();
+
+// Email: assemble from parts so the raw address isn't in the HTML source
+(function () {
+  var el = document.getElementById('email-chip');
+  if (!el) return;
+  var addr = el.getAttribute('data-user') + '@' + el.getAttribute('data-domain');
+  el.setAttribute('href', 'mailto:' + addr);
+})();
+
+// Footer meta
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('updated').textContent = 'Last updated ' + document.lastModified;
 </script>
-<br>
-<!-- Default Statcounter code for My Personal Website
-https://www.cs.jhu.edu/~freewym/ -->
-<script type="text/javascript">
-var sc_project=12446420; 
-var sc_invisible=0; 
-var sc_security="850eaf16"; 
-var sc_https=1; 
-var scJsHost = (("https:" == document.location.protocol) ?
-"https://secure." : "http://www.");
-document.write("<sc"+"ript type='text/javascript' src='" +
-scJsHost+
-"statcounter.com/counter/counter.js'></"+"script>");
-</script>
-<script type="text/javascript"
-src="https://www.statcounter.com/counter/counter.js" async></script>
-<noscript><div class="statcounter"><a title="Web Analytics"
-href="https://statcounter.com/" target="_blank"><img class="statcounter"
-src="https://c.statcounter.com/12446420/0/850eaf16/1/" alt="Web
-Analytics"></a></div></noscript>
-<!-- End of Statcounter Code -->
-<a href="http://statcounter.com/p12446420/?guest=1">View My
-Stats</a>
-<br>
+
+</body>
+</html>
